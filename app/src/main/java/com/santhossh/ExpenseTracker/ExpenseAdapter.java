@@ -1,54 +1,77 @@
 package com.santhossh.ExpenseTracker;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class ExpenseAdapter extends RecyclerView.Adapter<ExpenseAdapter.ExpenseViewHolder> {
 
-    private final ArrayList<Expense> expenses;
+    private List<Expense> expenseList;
+    private Context context;
+    private OnExpenseClickListener onExpenseClickListener;
 
-    public ExpenseAdapter(ArrayList<Expense> expenses) {
-        this.expenses = expenses;
+    // Constructor now takes both the expense list and the click listener
+    public ExpenseAdapter(List<Expense> expenseList, OnExpenseClickListener onExpenseClickListener, Context context) {
+        this.expenseList = expenseList;
+        this.onExpenseClickListener = onExpenseClickListener;
+        this.context = context;
     }
 
-    @NonNull
     @Override
-    public ExpenseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_expense, parent, false);
+    public ExpenseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        // Inflate the layout for each item in the list
+        View view = LayoutInflater.from(context).inflate(R.layout.item_expense, parent, false);
         return new ExpenseViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ExpenseViewHolder holder, int position) {
-        holder.bind(expenses.get(position));
+    public void onBindViewHolder(ExpenseViewHolder holder, int position) {
+        // Get the expense data for the current position
+        Expense expense = expenseList.get(position);
+
+        // Set the title and amount
+        holder.titleTextView.setText(expense.getTitle());
+        holder.amountTextView.setText(String.format("$%.2f", expense.getAmount()));
+        holder.participantCountTextView.setText("Participants: " + expense.getParticipantShares().size());
+
+        // Handle item click to show details
+        holder.itemView.setOnClickListener(v -> {
+            // Use the listener to pass the clicked expense to the activity
+            onExpenseClickListener.onExpenseClick(expense);
+        });
     }
 
     @Override
     public int getItemCount() {
-        return expenses.size();
+        return expenseList.size();
     }
 
-    static class ExpenseViewHolder extends RecyclerView.ViewHolder {
+    // ViewHolder class to hold the views for each expense item
+    public static class ExpenseViewHolder extends RecyclerView.ViewHolder {
 
-        private final TextView titleTextView;
-        private final TextView amountTextView;
+        public TextView titleTextView;
+        public TextView amountTextView;
+        public TextView participantCountTextView;
 
-        public ExpenseViewHolder(@NonNull View itemView) {
+        public ExpenseViewHolder(View itemView) {
             super(itemView);
-            titleTextView = itemView.findViewById(R.id.expense_title_text_view);
-            amountTextView = itemView.findViewById(R.id.expense_amount_text_view);
-        }
 
-        public void bind(Expense expense) {
-            titleTextView.setText(expense.getTitle());
-            amountTextView.setText(String.valueOf(expense.getTotalAmount()));
+            // Initialize views
+            titleTextView = itemView.findViewById(R.id.expense_title);
+            amountTextView = itemView.findViewById(R.id.expense_amount);
+            participantCountTextView = itemView.findViewById(R.id.expense_participants);
         }
+    }
+
+    // Interface to handle item clicks
+    public interface OnExpenseClickListener {
+        void onExpenseClick(Expense expense);
     }
 }

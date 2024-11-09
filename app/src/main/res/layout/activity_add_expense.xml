@@ -1,36 +1,74 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <EditText
-        android:id="@+id/expense_title"
-        android:hint="Expense Title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-    <EditText
-        android:id="@+id/total_amount"
-        android:hint="Total Amount"
-        android:inputType="numberDecimal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+    android:layout_height="match_parent"
+    android:padding="16dp">
 
     <LinearLayout
-        android:id="@+id/participants_layout"
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/add_participant_button"
-        android:text="+ Add Participant"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        <!-- Expense Title Input -->
+        <EditText
+            android:id="@+id/expense_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Expense Title"
+            android:inputType="text"
+            android:layout_marginBottom="16dp"/>
 
-    <Button
-        android:id="@+id/save_button"
-        android:text="Save Expense"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-</LinearLayout>
+        <!-- Expense Amount Input -->
+        <EditText
+            android:id="@+id/expense_amount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Total Amount"
+            android:inputType="numberDecimal"
+            android:layout_marginBottom="16dp"/>
+
+        <!-- Payer Selection Spinner -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Select Payer:"
+            android:layout_marginBottom="8dp" />
+
+        <Spinner
+            android:id="@+id/payer_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Add Participant Button -->
+        <Button
+            android:id="@+id/add_participant_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Add Participant"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Dynamic Layout for Participant Shares -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Enter each participant's share:"
+            android:layout_marginBottom="8dp" />
+
+        <LinearLayout
+            android:id="@+id/participant_shares_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+        <!-- Save Expense Button -->
+        <Button
+            android:id="@+id/save_expense_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Save Expense"
+            android:layout_marginTop="24dp"
+            android:onClick="saveExpense" />
+
+    </LinearLayout>
+</ScrollView>
